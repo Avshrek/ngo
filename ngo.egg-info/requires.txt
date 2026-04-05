@@ -1,0 +1,12 @@
+openenv-core>=0.1.0
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+pydantic>=2.0.0
+fastmcp>=0.1.0
+
+[dev]
+pytest>=7.0
+httpx>=0.24.0
+
+[inference]
+openai>=1.0.0

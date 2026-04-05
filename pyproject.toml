@@ -1,0 +1,28 @@
+[project]
+name = "ngo"
+version = "1.0.0"
+description = "N-GO: Neural-Gateway Orchestrator — The Self-Defending LLM Router. An OpenEnv environment for AI gateway security, routing optimization, and PII protection."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+dependencies = [
+    "openenv-core>=0.1.0",
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.20.0",
+    "pydantic>=2.0.0",
+    "fastmcp>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "httpx>=0.24.0",
+]
+inference = [
+    "openai>=1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
