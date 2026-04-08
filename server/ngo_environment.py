@@ -667,7 +667,10 @@ class NGOEnvironment(MCPEnvironment):
             return {"error": "No task loaded. Call reset() first."}
 
         score, details = grade_task(self._task_name, self._config)
+        # Clamp score strictly within (0, 1) — evaluator rejects 0.0 and 1.0
+        score = round(min(0.999, max(0.001, score)), 4)
         self._done = True
+
 
         return {
             "status": "graded",
