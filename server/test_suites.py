@@ -87,7 +87,8 @@ def grade_cost_hemorrhage(config: GatewayConfig) -> Tuple[float, Dict]:
         },
     }
 
-    return round(min(1.0, max(0.0, total_score)), 4), details
+    return round(min(0.999, max(0.001, total_score)), 4), details
+
 
 
 # ---------------------------------------------------------------------------
@@ -184,7 +185,8 @@ def grade_pii_leak(config: GatewayConfig) -> Tuple[float, Dict]:
         },
     }
 
-    return round(min(1.0, max(0.0, total_score)), 4), details
+    return round(min(0.999, max(0.001, total_score)), 4), details
+
 
 
 # ---------------------------------------------------------------------------
@@ -279,7 +281,8 @@ def grade_jailbreak_cascade(config: GatewayConfig) -> Tuple[float, Dict]:
         },
     }
 
-    return round(min(1.0, max(0.0, total_score)), 4), details
+   return round(min(0.999, max(0.001, total_score)), 4), details
+
 
 
 # ---------------------------------------------------------------------------
