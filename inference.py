@@ -523,7 +523,7 @@ def run_task(
         grade_data = _find_grade_result(result)
         if grade_data:
             done = True
-            final_score = float(grade_data.get("final_score", 0.0))
+            final_score = clamp_score(grade_data.get("final_score", 0.0))
             final_details = grade_data.get("details", {})
 
         # Also check top-level observation done flag
@@ -532,28 +532,28 @@ def run_task(
 
         if done:
             if final_score == 0.0:
-                final_score = float(obs.get("reward", 0.0) or cumulative_reward)
+                final_score = clamp_score(obs.get("reward", 0.0) or cumulative_reward)
             # --- [END] ---
             log_end(task_name, final_score, "completed", final_details)
-            return final_score
+            return clamp_score(final_score)
 
     # Max steps reached — force grade
     try:
         result = env_client.step("grade_config", {})
         grade_data = _find_grade_result(result)
         if grade_data:
-            final_score = float(grade_data.get("final_score", 0.0))
+            final_score = clamp_score(grade_data.get("final_score", 0.0))
             final_details = grade_data.get("details", {})
         else:
-            final_score = 0.0
+            final_score = 0.001
             final_details = {}
     except Exception as e:
-        final_score = 0.0
+        final_score = 0.001
         final_details = {"error": str(e)}
 
     # --- [END] ---
     log_end(task_name, final_score, "max_steps_reached", final_details)
-    return final_score
+    return clamp_score(final_score)
 
 
 def main():
