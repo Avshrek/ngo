@@ -31,6 +31,21 @@ from openai import OpenAI
 
 
 # ---------------------------------------------------------------------------
+# Score clamping — scores must be strictly between 0 and 1 (exclusive)
+# ---------------------------------------------------------------------------
+
+def clamp_score(score: float) -> float:
+    """Clamp score to strictly open interval (0, 1) as required by the validator."""
+    _MIN = 1e-6
+    _MAX = 1.0 - 1e-6
+    try:
+        score = float(score)
+    except (TypeError, ValueError):
+        score = 0.0
+    return max(_MIN, min(_MAX, score))
+
+
+# ---------------------------------------------------------------------------
 # Configuration from environment variables
 # ---------------------------------------------------------------------------
 
@@ -531,10 +546,11 @@ def run_task(
             done = obs.get("done", False)
 
         if done:
-            if final_score == 0.0:
-                final_score = clamp_score(obs.get("reward", 0.0) or cumulative_reward)
+            if final_score <= 1e-6:
+                raw = obs.get("reward", 0.0) if isinstance(obs, dict) else 0.0
+                final_score = clamp_score(raw or cumulative_reward or 0.0)
             # --- [END] ---
-            log_end(task_name, final_score, "completed", final_details)
+            log_end(task_name, clamp_score(final_score), "completed", final_details)
             return clamp_score(final_score)
 
     # Max steps reached — force grade
