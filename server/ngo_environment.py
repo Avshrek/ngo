@@ -391,7 +391,7 @@ class NGOEnvironment(MCPEnvironment):
 
         return Observation(
             done=False,
-            reward=0.0,
+            reward=1e-4,
             metadata={
                 "task_name": task_name,
                 "telemetry": telemetry,
@@ -410,7 +410,7 @@ class NGOEnvironment(MCPEnvironment):
     ) -> Observation:
         return Observation(
             done=self._done,
-            reward=0.0,
+            reward=1e-4,
             metadata={
                 "error": f"Unknown action type: {type(action).__name__}. "
                 "Use CallToolAction for MCP tool interactions."
@@ -668,7 +668,7 @@ class NGOEnvironment(MCPEnvironment):
 
         score, details = grade_task(self._task_name, self._config)
         # Clamp score strictly within (0, 1) — evaluator rejects 0.0 and 1.0
-        score = round(min(0.999, max(0.001, score)), 4)
+        score = round(min(0.9999, max(0.0001, score)), 6)
         self._done = True
 
 

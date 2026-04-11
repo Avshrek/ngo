@@ -87,7 +87,7 @@ def grade_cost_hemorrhage(config: GatewayConfig) -> Tuple[float, Dict]:
         },
     }
 
-    return round(min(0.999, max(0.001, total_score)), 4), details
+    return round(min(0.9999, max(0.0001, total_score)), 6), details
 
 
 
@@ -185,7 +185,7 @@ def grade_pii_leak(config: GatewayConfig) -> Tuple[float, Dict]:
         },
     }
 
-    return round(min(0.999, max(0.001, total_score)), 4), details
+    return round(min(0.9999, max(0.0001, total_score)), 6), details
 
 
 
@@ -281,7 +281,7 @@ def grade_jailbreak_cascade(config: GatewayConfig) -> Tuple[float, Dict]:
         },
     }
 
-    return round(min(0.999, max(0.001, total_score)), 4), details
+    return round(min(0.9999, max(0.0001, total_score)), 6), details
 
 
 
@@ -303,7 +303,7 @@ def _clamp_exclusive(score: float) -> float:
 
     The hackathon grading platform rejects scores of exactly 0.0 or 1.0.
     """
-    return round(min(0.9999, max(0.0001, score)), 4)
+    return round(min(0.9999, max(0.0001, score)), 6)
 
 
 def grade_task(task_name: str, config: GatewayConfig) -> Tuple[float, Dict]:
