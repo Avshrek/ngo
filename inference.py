@@ -97,9 +97,17 @@ def log_step(
 
 def log_end(task_id: str, final_score: float, status: str = "completed", details: Optional[Dict] = None):
     """Emit an [END] log line for the automated evaluator."""
+    # Hard clamp here as final safety net — validator requires strictly (0, 1)
+    _MIN = 1e-6
+    _MAX = 1.0 - 1e-6
+    try:
+        safe_score = float(final_score)
+    except (TypeError, ValueError):
+        safe_score = _MIN
+    safe_score = max(_MIN, min(_MAX, safe_score))
     payload = {
         "task_id": task_id,
-        "final_score": float(final_score),
+        "final_score": safe_score,
         "status": status,
         "timestamp": time.time(),
         "details": details or {},
@@ -568,7 +576,7 @@ def run_task(
         final_details = {"error": str(e)}
 
     # --- [END] ---
-    log_end(task_name, final_score, "max_steps_reached", final_details)
+    log_end(task_name, clamp_score(final_score), "max_steps_reached", final_details)
     return clamp_score(final_score)
 
 
